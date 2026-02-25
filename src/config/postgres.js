@@ -1,10 +1,10 @@
 import { Pool } from 'pg';
 import { env } from './env.js';
 
-const { Pool } = pg;
 const pool = new Pool({
     connectionString: env.url_postgres
 });
+
 async function createTables() {
     const client = await pool.connect();
     try {
@@ -16,9 +16,13 @@ async function createTables() {
                 password VARCHAR(255) NOT NULL
             )
         `);
+
+        console.log('Tabla users creada o ya existente');
     } catch (error) {
-        console.error(error);
+        console.error('Error creando tablas:', error);
     } finally {
         client.release();
     }
 }
+
+export { pool, createTables };
